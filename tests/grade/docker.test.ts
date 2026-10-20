@@ -64,7 +64,9 @@ process.exit(process.argv[2] === "info" && ${!dockerRunning} ? 1 : 0);
   return { tmp, run, base };
 }
 
-describe("npm run grade:docker", () => {
+// The fake `docker` is a script with a #! line, which Windows can't run. The
+// launcher builds the same arguments on every system.
+describe.skipIf(process.platform === "win32")("npm run grade:docker", () => {
   it("runs the grader in a locked-down container with only the token, roster and results", () => {
     const { tmp, run, base } = setup();
     const result = run([

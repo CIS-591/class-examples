@@ -1,7 +1,6 @@
 // @vitest-environment node
 import { execFileSync, spawnSync } from "node:child_process";
 import {
-  chmodSync,
   copyFileSync,
   existsSync,
   mkdirSync,
@@ -13,9 +12,9 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { tempDir } from "./helpers/temp-dir";
 
-const script = join(process.cwd(), "scripts/start-module.sh");
+const script = join(process.cwd(), "scripts/start-module.mjs");
 
-// A throwaway clone of a "module-3" branch, plus a fake `gh` that records its
+// A throwaway clone of a "module-3" branch, plus a fake `gh` (a Node script) that records its
 // arguments instead of talking to GitHub. The student's "GitHub" repo is a
 // local bare repo, which exists once `gh repo create` has run.
 function setup({ failCreate = false, exists = false } = {}) {
@@ -42,7 +41,7 @@ function setup({ failCreate = false, exists = false } = {}) {
     JSON.stringify({ module: 3, repoPrefix: "copper-m" }),
   );
   mkdirSync(join(clone, "scripts"));
-  copyFileSync(script, join(clone, "scripts/start-module.sh"));
+  copyFileSync(script, join(clone, "scripts/start-module.mjs"));
   git(clone, "add", ".");
   git(
     clone,
@@ -56,26 +55,33 @@ function setup({ failCreate = false, exists = false } = {}) {
   );
 
   mkdirSync(bin);
+  const fakeGh = join(bin, "gh.mjs");
   writeFileSync(
-    join(bin, "gh"),
-    [
-      "#!/bin/sh",
-      `echo "gh $*" >> "${log}"`,
-      'case "$1 $2" in',
-      '  "api user") echo student-1 ;;',
-      `  "repo view") [ -f "${created}" ] || exit 1; case "$*" in *--json*) echo "${student}" ;; esac ;;`,
-      `  "repo create") [ -f "${failFlag}" ] && exit 1; touch "${created}" ;;`,
-      "esac",
-      "exit 0",
-      "",
-    ].join("\n"),
+    fakeGh,
+    `import { appendFileSync, existsSync, writeFileSync } from "node:fs";
+const args = process.argv.slice(2);
+appendFileSync(${JSON.stringify(log)}, "gh " + args.join(" ") + "\\n");
+const created = existsSync(${JSON.stringify(created)});
+switch (args.slice(0, 2).join(" ")) {
+  case "api user":
+    console.log("student-1");
+    break;
+  case "repo view":
+    if (!created) process.exit(1);
+    if (args.includes("--json")) console.log(${JSON.stringify(student)});
+    break;
+  case "repo create":
+    if (existsSync(${JSON.stringify(failFlag)})) process.exit(1);
+    writeFileSync(${JSON.stringify(created)}, "");
+    break;
+}
+`,
   );
-  chmodSync(join(bin, "gh"), 0o755);
 
   const run = () =>
-    spawnSync("bash", ["scripts/start-module.sh"], {
+    spawnSync(process.execPath, ["scripts/start-module.mjs"], {
       cwd: clone,
-      env: { ...process.env, PATH: `${bin}:${process.env.PATH}` },
+      env: { ...process.env, START_MODULE_FAKE_GH: fakeGh },
       encoding: "utf8",
     });
   const gitOut = (...args: string[]) =>

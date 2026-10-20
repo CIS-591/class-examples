@@ -1,0 +1,3 @@
+# Keep LF line endings on every system, including Windows (where Git would
+# otherwise check files out with CRLF and Prettier would flag every file).
+* text=auto eol=lf

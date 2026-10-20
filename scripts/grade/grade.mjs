@@ -23,6 +23,7 @@ import {
   cpSync,
   existsSync,
   mkdtempSync,
+  realpathSync,
   readdirSync,
   readFileSync,
   rmSync,
@@ -115,7 +116,11 @@ const concurrency = Number(
 );
 const cache = createCache(join(outDir, "cache"), !opts["no-cache"]);
 const gradingPrint = fingerprint(root, hiddenDir);
-const work = mkdtempSync(join(tmpdir(), `grade-m${moduleNumber}-`));
+// The real path: on Windows, tmpdir() can be a short name (C:\\Users\\RUNNER~1)
+// that Vite resolves differently, so it can't find the test setup file.
+const work = realpathSync.native(
+  mkdtempSync(join(tmpdir(), `grade-m${moduleNumber}-`)),
+);
 if (isolated) chmodSync(work, 0o711);
 const started = performance.now();
 let fromCache = 0;

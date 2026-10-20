@@ -133,12 +133,30 @@ export async function prepareWorkspace({
   }
   rmSync(join(dir, "node_modules"), { recursive: true, force: true });
   if (lockHash(dir) === lockHash(root)) {
-    symlinkSync(join(root, "node_modules"), join(dir, "node_modules"), "dir");
+    // "junction" works on Windows without admin rights; other systems ignore it.
+    symlinkSync(
+      join(root, "node_modules"),
+      join(dir, "node_modules"),
+      "junction",
+    );
     return { install: "shared" };
   }
+  // Under `npm run`, npm_execpath is npm's own script, which runs without a
+  // shell on every system (`npm` alone is npm.cmd on Windows).
+  const npm = process.env.npm_execpath;
+  const [command, prefix] = npm?.endsWith(".js")
+    ? [process.execPath, [npm]]
+    : ["npm", []];
   const result = await runAsync(
-    "npm",
-    ["ci", "--prefer-offline", "--no-audit", "--no-fund", "--ignore-scripts"],
+    command,
+    [
+      ...prefix,
+      "ci",
+      "--prefer-offline",
+      "--no-audit",
+      "--no-fund",
+      "--ignore-scripts",
+    ],
     { cwd: dir, env: process.env, timeoutMs: 300_000 },
   );
   if (result.status !== 0)

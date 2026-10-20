@@ -8,7 +8,7 @@ import {
   rmSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, relative } from "node:path";
 import { brokenFiles } from "../../check-lib.mjs";
 import { runAsync } from "../proc.mjs";
 
@@ -86,7 +86,7 @@ export async function runVitest(ctx, paths, env) {
   }));
   const errors = brokenFiles(json).map(
     (b) =>
-      `${b.file.replace(`${ctx.dir}/`, "")} could not run: ${b.message ?? "unknown error"}`,
+      `${relative(ctx.dir, b.file)} could not run: ${b.message ?? "unknown error"}`,
   );
   return { results, errors };
 }

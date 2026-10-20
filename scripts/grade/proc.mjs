@@ -51,7 +51,18 @@ export function runAsync(
  * tokens from your shell reach code you're grading.
  */
 export function safeEnv(extra = {}) {
-  const keep = ["PATH", "HOME", "TMPDIR", "LANG", "SYSTEMROOT"];
+  // The last four are what Node and npm need on Windows.
+  const keep = [
+    "PATH",
+    "HOME",
+    "TMPDIR",
+    "LANG",
+    "SYSTEMROOT",
+    "USERPROFILE",
+    "APPDATA",
+    "LOCALAPPDATA",
+    "TEMP",
+  ];
   const env = Object.fromEntries(
     keep
       .filter((key) => process.env[key])

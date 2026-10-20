@@ -6,7 +6,12 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    # Students work on macOS and Windows; the grader runs on Linux.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -17,3 +22,11 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
+      - run: npm run build
+      # The starter fails some criteria on purpose; this only checks that the
+      # checklist runs and prints its summary.
+      - name: npm run check prints the checklist
+        shell: bash
+        run: |
+          npm run check | tee check.txt || true
+          grep -q "criteria passed" check.txt

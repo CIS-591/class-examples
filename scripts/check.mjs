@@ -21,10 +21,11 @@ if (paths.length === 0) {
 }
 
 const output = join(mkdtempSync(join(tmpdir(), "check-")), "results.json");
+// Vitest's own script, run with this Node: `npx` needs a shell on Windows.
 spawnSync(
-  "npx",
+  process.execPath,
   [
-    "vitest",
+    join("node_modules", "vitest", "vitest.mjs"),
     "run",
     "--config",
     "vitest.check.config.mts",
