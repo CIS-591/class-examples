@@ -50,7 +50,9 @@ function languageModel(model: ModelId) {
   if (!googleKey) throw new AiNotConfiguredError();
   const entry = MODELS.find((m) => m.id === model);
   const id =
-    entry && "googleId" in entry ? entry.googleId : model.slice("google/".length);
+    entry && "googleId" in entry
+      ? entry.googleId
+      : model.slice("google/".length);
   return createGoogleGenerativeAI({ apiKey: googleKey })(id);
 }
 
@@ -112,13 +114,16 @@ export async function callObject<Schema extends z.ZodType>(
   options: TextOptions & { schema: Schema },
 ) {
   const { schema, ...rest } = options;
-  return tracked(info, (model) =>
+  const result = await tracked(info, (model) =>
     generateText({
       ...rest,
       model: languageModel(model),
       output: Output.object({ schema }),
     }),
   );
+  // Spreading `rest` loses generateText's output type; Output.object has
+  // already validated it against `schema`, so restore the type here.
+  return result as typeof result & { output: z.infer<Schema> };
 }
 
 type StreamOptions = DistributiveOmit<

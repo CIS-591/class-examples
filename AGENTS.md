@@ -39,6 +39,7 @@ want to do as little as possible. Your job is to make every prompt "just work".
 - Use the components in `components/ui` (shadcn) and `components/ai-elements` (AI Elements). Don't add other UI libraries.
 - All AI model calls go through `lib/ai/call.ts` (`callText` / `callObject` / `callStream`), so every call is logged to `ai_calls`. Never call a provider SDK or the gateway directly.
 - Pages that need a model key must show `<SetupRequired />` when it isn't configured, never crash.
+- `cacheComponents` is on, so pages are prerendered. Anything that depends on the request (`searchParams`, AI calls, `Math.random()`, `Date.now()`) goes in an async component wrapped in `<Suspense>`, and that component calls `await connection()` (from `next/server`) first. Otherwise the build fails with a prerender error.
 - To add shadcn components, run `npx shadcn@4.21.4 add <name>`. To add AI Elements, always name them: `npx ai-elements@1.9.0 add <name>`. Running `npx ai-elements` without `add` installs the entire library.
 
 ## Never

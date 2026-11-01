@@ -103,6 +103,10 @@ describe("lib/ai/call.ts", () => {
       },
     );
     expect(result.output).toEqual({ category: "wake word", flag: false });
+    // Compile-time check (npm run typecheck): output keeps the schema's type.
+    const flag: boolean = result.output.flag;
+    expect(flag).toBe(false);
+    expect(result.usage).toBeDefined();
   });
 
   it("uses Gemini 2.5 Flash when no model is given", async () => {
