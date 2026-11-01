@@ -13,7 +13,8 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "format": "prettier --write .",
-    "start-module": "node scripts/start-module.mjs"
+    "start-module": "node scripts/start-module.mjs",
+    "env:check": "node scripts/check-env.mjs"
   },
   "dependencies": {
     "@ai-sdk/google": "4.0.93",

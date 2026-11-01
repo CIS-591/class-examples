@@ -19,6 +19,7 @@ describe("Agent harness", () => {
         "Bash(npm test)",
         "Bash(npm run lint)",
         "Bash(npm run typecheck)",
+        "Bash(npm run env:check)",
       ]),
     );
   });
@@ -42,6 +43,7 @@ describe("Agent harness", () => {
     ".env",
     "conflicting or outdated facts in the Product Bible",
     "public/docs/",
+    "npm run env:check",
   ])("AGENTS.md covers %s", (rule) => {
     expect(agents).toContain(rule);
   });

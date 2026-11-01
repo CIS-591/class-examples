@@ -34,13 +34,14 @@ There is one, and it's optional until a module needs it. Put it in `.env.local` 
 
 ## Commands
 
-| Command                              | What it does                                 |
-| ------------------------------------ | -------------------------------------------- |
-| `npm run dev`                        | Start the dev server                         |
-| `npm test`                           | Run the app's tests                          |
-| `npm run lint` / `npm run typecheck` | Check code style and types                   |
-| `npm run format`                     | Format the code with Prettier                |
-| `npm run start-module`               | One-time setup after cloning a module branch |
+| Command                              | What it does                                      |
+| ------------------------------------ | ------------------------------------------------- |
+| `npm run dev`                        | Start the dev server                              |
+| `npm test`                           | Run the app's tests                               |
+| `npm run lint` / `npm run typecheck` | Check code style and types                        |
+| `npm run format`                     | Format the code with Prettier                     |
+| `npm run start-module`               | One-time setup after cloning a module branch      |
+| `npm run env:check`                  | List the variables in `.env.local`, values masked |
 
 ## AI coding agents
 

@@ -21,6 +21,7 @@ How the app fits together is in `docs/architecture.md`; add a section there when
 ## Never
 
 - Never read, print or commit `.env` files (including `.env.local`). Refer to variables by name only.
+  To check what's set, run `npm run env:check`: it lists each variable's name with its value masked (only the first and last 4 characters of long values).
 - Never correct, remove or reconcile conflicting or outdated facts in the Product Bible (for example the old 2024 privacy policy or the Marketing FAQ error). They are intentional.
 
 <!-- BEGIN:nextjs-agent-rules -->

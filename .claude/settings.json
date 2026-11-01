@@ -12,6 +12,11 @@
       "Bash(less .env*)",
       "Bash(more .env*)"
     ],
-    "allow": ["Bash(npm test)", "Bash(npm run lint)", "Bash(npm run typecheck)"]
+    "allow": [
+      "Bash(npm test)",
+      "Bash(npm run lint)",
+      "Bash(npm run typecheck)",
+      "Bash(npm run env:check)"
+    ]
   }
 }

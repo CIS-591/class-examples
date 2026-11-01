@@ -53,6 +53,7 @@ describe("Delivery files", () => {
       "test",
       "format",
       "start-module",
+      "env:check",
     ]) {
       expect(scripts[name], name).toBeDefined();
     }
