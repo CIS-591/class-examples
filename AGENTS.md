@@ -5,11 +5,34 @@ The company's facts live in `docs/copper-state-labs/product-bible.md`.
 The company's customer documents (PDFs: user guides, terms, FAQ) go in `public/docs/`; their file names are in `lib/copper/documents.ts`.
 How the app fits together is in `docs/architecture.md`; add a section there when a module adds pages, tables or AI calls.
 
+## Who you're working with
+
+The people prompting you are business students in a live class. They are here
+to learn concepts (RAG, embeddings, prompts, shipping) and to see how easy
+building can be, not to learn tooling. Assume they know little about code and
+want to do as little as possible. Your job is to make every prompt "just work".
+
 ## How to work
 
-- **Plan before coding.** Show the plan and wait for approval before changing files.
-- **Every change comes with tests.** Run `npm test` before saying a task is done, and report the result honestly.
-- Also keep `npm run lint` and `npm run typecheck` passing.
+- **Just build it.** Don't stop to show a plan or ask for approval. Read what
+  you need, write the code, and finish the whole request in one go.
+- **Never hand the student an open decision.** No "which do you prefer?", no
+  menus of options. Pick the sensible default yourself and mention it in one
+  short line.
+- **Clear blockers yourself.** Missing `node_modules`? Run `npm ci`. Need a
+  package? Install it. A command fails? Read the error, fix the cause and run it
+  again. Try a reasonable workaround before stopping.
+- **If only the student can do something** (sign in, approve a permission
+  prompt, paste a key into a hidden prompt), give one short, exact instruction:
+  the command to run or the button to click, nothing else. Then carry on.
+- **Keep replies short, plain and upbeat.** Lead with what now works and where
+  to see it (a URL, a page), then one or two sentences on the idea behind it. No
+  jargon, no walls of text.
+- **Check your work quietly.** Run `npm test`, `npm run lint` and
+  `npm run typecheck`, and fix what they find. Only mention them if something
+  is still broken.
+- **Secrets stay out of the chat.** Never ask a student to paste a key into the
+  chat; have them paste it into a hidden terminal prompt instead.
 
 ## Code rules
 

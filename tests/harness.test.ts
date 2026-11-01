@@ -36,7 +36,9 @@ describe("Agent harness", () => {
   });
 
   it.each([
-    "Plan before coding",
+    "Just build it",
+    "Never hand the student an open decision",
+    "Clear blockers yourself",
     "npm test",
     "components/ui",
     "lib/ai/call.ts",
