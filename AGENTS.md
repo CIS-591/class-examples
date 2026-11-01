@@ -2,14 +2,14 @@
 
 This repo is the CIS 591 class app for Copper State Labs, a fictional company.
 The company's facts live in `docs/copper-state-labs/product-bible.md`.
-Each module's spec, instructions, tests and evals live in `specs/module-N/`.
+The company's customer documents (PDFs: user guides, terms, FAQ) go in `public/docs/`; their file names are in `lib/copper/documents.ts`.
 How the app fits together is in `docs/architecture.md`; add a section there when a module adds pages, tables or AI calls.
 
 ## How to work
 
 - **Plan before coding.** Show the plan and wait for approval before changing files.
 - **Every change comes with tests.** Run `npm test` before saying a task is done, and report the result honestly.
-- Also keep `npm run lint` and `npm run typecheck` passing. `npm run check` shows which acceptance criteria for the current module pass.
+- Also keep `npm run lint` and `npm run typecheck` passing.
 
 ## Code rules
 
@@ -22,7 +22,6 @@ How the app fits together is in `docs/architecture.md`; add a section there when
 
 - Never read, print or commit `.env` files (including `.env.local`). Refer to variables by name only.
 - Never correct, remove or reconcile conflicting or outdated facts in the Product Bible (for example the old 2024 privacy policy or the Marketing FAQ error). They are intentional.
-- Never change files under `specs/*/tests` or `specs/*/evals`, or a module's `rubric.md`, `grading.mjs` or `checks/`. If a test looks wrong, say so instead.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

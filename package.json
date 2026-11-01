@@ -13,10 +13,7 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "format": "prettier --write .",
-    "check": "node scripts/check.mjs",
-    "start-module": "node scripts/start-module.mjs",
-    "grade": "node scripts/grade/grade.mjs",
-    "grade:docker": "node scripts/grade/docker.mjs"
+    "start-module": "node scripts/start-module.mjs"
   },
   "dependencies": {
     "@ai-sdk/google": "4.0.93",

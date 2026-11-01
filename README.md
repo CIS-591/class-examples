@@ -4,9 +4,10 @@ The starter app for CIS 591. Copper State Labs is a fictional Arizona company
 (see the [Product Bible](docs/copper-state-labs/product-bible.md)); each module
 adds a feature to this one app.
 
-**Start here:** [Module 0 instructions](specs/module-0/instructions.md).
-The [`docs/`](docs/README.md) folder explains the company and how the app fits
-together; [`specs/`](specs/README.md) holds each module's work.
+This is the Module 3 starting point: the Copper site plus an empty Support
+page (`/support`) that we build in class. The
+[`docs/`](docs/README.md) folder explains the company and how the app fits
+together.
 
 _Fictional — for educational use._
 
@@ -27,20 +28,19 @@ Or open the repo in **GitHub Codespaces**: it installs everything and starts the
 
 There is one, and it's optional until a module needs it. Put it in `.env.local` (never commit it) and in your Vercel project settings.
 
-| Variable                               | Used for                        | Where to find it                                                                   |
-| -------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------- |
-| `GOOGLE_GENERATIVE_AI_API_KEY`         | All AI calls (`lib/ai/call.ts`) | [Google AI Studio](https://aistudio.google.com) > Get API key (free, no card)      |
+| Variable                       | Used for                        | Where to find it                                                              |
+| ------------------------------ | ------------------------------- | ----------------------------------------------------------------------------- |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | All AI calls (`lib/ai/call.ts`) | [Google AI Studio](https://aistudio.google.com) > Get API key (free, no card) |
 
 ## Commands
 
-| Command                              | What it does                                                           |
-| ------------------------------------ | ---------------------------------------------------------------------- |
-| `npm run dev`                        | Start the dev server                                                   |
-| `npm test`                           | Run the app's tests                                                    |
-| `npm run check`                      | Show which acceptance criteria for the current module pass             |
-| `npm run lint` / `npm run typecheck` | Check code style and types                                             |
-| `npm run format`                     | Format the code with Prettier                                          |
-| `npm run start-module`               | One-time setup after cloning a module branch                           |
+| Command                              | What it does                                 |
+| ------------------------------------ | -------------------------------------------- |
+| `npm run dev`                        | Start the dev server                         |
+| `npm test`                           | Run the app's tests                          |
+| `npm run lint` / `npm run typecheck` | Check code style and types                   |
+| `npm run format`                     | Format the code with Prettier                |
+| `npm run start-module`               | One-time setup after cloning a module branch |
 
 ## AI coding agents
 

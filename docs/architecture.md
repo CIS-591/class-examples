@@ -20,7 +20,6 @@ A Google AI Studio key is optional until a module needs one.
 | Company catalog | `lib/copper/catalog.ts`, `lib/copper/data/catalog.json` | Product, plan and privacy facts from the Product Bible (Sections 3, 4, 8 and 10). Pages read prices and plan details from here instead of typing them (added in the Module 1 starter) |
 | AI wrapper | `lib/ai/call.ts` | `callText` and `callObject`: every model call goes through these and is logged to the terminal |
 | Models and prices | `lib/ai/models.ts`, `lib/ai/pricing.ts` | The approved Gemini models and their token prices |
-| Module checks | `specs/module-N/`, `scripts/check.mjs` | Each module's spec, instructions, rubric and acceptance tests; `npm run check` runs them |
 
 ## Data flow
 
@@ -82,3 +81,14 @@ When a module changes how the app fits together, add a section here:
 **Risks and open questions:** cost, privacy, accuracy or safety risks, and how
 you handle them.
 ```
+
+## Module 3 starter: Support page
+
+**Summary:** an empty Support page for Module 3 to build on. Module 2's Ask
+Copper starter was removed.
+
+| Piece | Where | What it does |
+|---|---|---|
+| Page / route | `app/support/page.tsx` | `/support`, linked from the site header. Only a heading so far |
+| Data | `lib/copper/documents.ts` | `DOCUMENTS`: the four customer documents (two user guides, the Terms and Conditions, the Copper Plus FAQ) and their PDF paths under `public/docs/`. The PDFs are added in class |
+| AI calls | none yet | |

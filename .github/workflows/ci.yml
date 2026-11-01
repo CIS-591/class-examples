@@ -6,7 +6,7 @@ on:
 
 jobs:
   check:
-    # Students work on macOS and Windows; the grader runs on Linux.
+    # Students work on macOS and Windows; Vercel builds on Linux.
     strategy:
       fail-fast: false
       matrix:
@@ -23,10 +23,3 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
-      # The starter fails some criteria on purpose; this only checks that the
-      # checklist runs and prints its summary.
-      - name: npm run check prints the checklist
-        shell: bash
-        run: |
-          npm run check | tee check.txt || true
-          grep -q "criteria passed" check.txt

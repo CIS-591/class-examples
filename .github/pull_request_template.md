@@ -1,10 +1,10 @@
 ## Spec
 
-Link to the spec this PR implements (for example `specs/module-2/spec.md`):
+What this PR does, and the prompt or spec it came from:
 
 ## Test evidence
 
-Paste the output of `npm test` and `npm run check`:
+Paste the output of `npm test`:
 
 ```
 

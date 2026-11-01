@@ -22,6 +22,7 @@ describe("Delivery files", () => {
 
   it("PR template asks for the spec, test evidence, rejected AI code and an architecture note", () => {
     const template = read(".github/pull_request_template.md");
+    expect(template).not.toContain("npm run check");
     for (const heading of [
       "Spec",
       "Test evidence",
@@ -37,8 +38,6 @@ describe("Delivery files", () => {
     "docs/README.md",
     "docs/architecture.md",
     "docs/starter-app.md",
-    "specs/module-0/instructions.md",
-    "specs/README.md",
     "course.config.json",
   ])("%s exists", (path) => {
     expect(existsSync(path)).toBe(true);
@@ -53,10 +52,7 @@ describe("Delivery files", () => {
       "typecheck",
       "test",
       "format",
-      "check",
       "start-module",
-      "grade",
-      "grade:docker",
     ]) {
       expect(scripts[name], name).toBeDefined();
     }
