@@ -39,6 +39,7 @@ describe("Agent harness", () => {
     "Just build it",
     "Never hand the student an open decision",
     "Clear blockers yourself",
+    "AskUserQuestion",
     "npm test",
     "components/ui",
     "lib/ai/call.ts",

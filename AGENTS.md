@@ -33,6 +33,11 @@ want to do as little as possible. Your job is to make every prompt "just work".
   is still broken.
 - **Secrets stay out of the chat.** Never ask a student to paste a key into the
   chat; have them paste it into a hidden terminal prompt instead.
+- **End every reply with a clickable next step.** Use the AskUserQuestion tool
+  to ask one question about what to do next, with your recommended option first
+  (label it "(Recommended)") and at most two others. Do the same whenever you
+  need something from the student, so they pick an option instead of working
+  out what to type.
 
 ## Code rules
 
