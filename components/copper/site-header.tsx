@@ -3,13 +3,13 @@ import { Logo } from "@/components/copper/logo";
 import { ModeToggle } from "@/components/copper/mode-toggle";
 import { cn } from "@/lib/utils";
 
-// Four links don't fit beside the logo on a phone, so the home-page section
-// links that the page itself scrolls to are hidden there.
+// Four links don't fit beside the logo on a phone, so two section links are
+// hidden there.
 const LINKS = [
-  { href: "/#products", label: "Products" },
-  { href: "/#plus", label: "Copper Plus", phone: false },
-  { href: "/#privacy", label: "Privacy", phone: false },
-  { href: "/support", label: "Support" },
+  { href: "#products", label: "Products" },
+  { href: "#plus", label: "Copper Plus", phone: false },
+  { href: "#privacy", label: "Privacy", phone: false },
+  { href: "#ask", label: "Ask Copper" },
 ];
 
 export function SiteHeader() {

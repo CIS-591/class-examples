@@ -4,8 +4,9 @@ The starter app for CIS 591. Copper State Labs is a fictional Arizona company
 (see the [Product Bible](docs/copper-state-labs/product-bible.md)); each module
 adds a feature to this one app.
 
-This is the Module 3 starting point: the Copper site plus an empty Support
-page (`/support`) that we build in class. The
+This is the Module 3 starting point: the Copper site with Ask Copper, the
+shopping chatbot from Module 2. In class we teach Ask Copper to answer from
+the company's PDFs, with the page each answer came from. The
 [`docs/`](docs/README.md) folder explains the company and how the app fits
 together.
 

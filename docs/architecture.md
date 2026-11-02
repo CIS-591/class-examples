@@ -82,13 +82,17 @@ When a module changes how the app fits together, add a section here:
 you handle them.
 ```
 
-## Module 3 starter: Support page
+## Module 3 starter: Ask Copper
 
-**Summary:** an empty Support page for Module 3 to build on. Module 2's Ask
-Copper starter was removed.
+**Summary:** Ask Copper, the Module 2 shopping chatbot, finished: a floating
+chat panel that answers prices, totals and stock with four tools and shows
+each step. Module 3 teaches it to answer from the customer documents.
 
 | Piece | Where | What it does |
 |---|---|---|
-| Page / route | `app/support/page.tsx` | `/support`, linked from the site header. Only a heading so far |
-| Data | `lib/copper/documents.ts` | `DOCUMENTS`: the four customer documents (two user guides, the Terms and Conditions, the Copper Plus FAQ) and their PDF paths under `public/docs/`. The PDFs are added in class |
-| AI calls | none yet | |
+| Component | `components/copper/ask-copper.tsx` | The launcher and chat panel, mounted from `app/page.tsx` and opened by the header's `#ask` link. Draws each answer as stations: the tools on offer, thinking, each tool call, then the reply |
+| Server Action | `lib/copper/assistant/ask.ts` | `askCopper()`: streams the conversation with `callStream`, up to 5 steps, and sends each step back as a live `Progress` |
+| Tools | `lib/copper/assistant/tools.ts` | `copperTools`: `get_products`, `get_prices`, `calculate_cost`, `check_availability` |
+| Instructions | `lib/copper/assistant/instructions.ts` | `COPPER_INSTRUCTIONS`. Copper says it can't help yet with warranty, setup, troubleshooting or privacy |
+| Data | `lib/copper/inventory.ts`, `lib/copper/documents.ts` | Stock from `lib/copper/data/inventory.json`; `DOCUMENTS`: the four customer documents and their PDF paths under `public/docs/`. The PDFs are added in class |
+| AI calls | `{ module: 2, feature: "ask-copper" }` | One streamed call per question |
