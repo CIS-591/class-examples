@@ -33,7 +33,7 @@ Repeat:
    - New lines on your card → read them. An undone move tells you why; don't repeat it.
    - The planned square is already yours, or no longer touches you → pick another.
 3. **Paint** it: one `canvas_update_from_svg` call with only `data-miro-id` and `fill`.
-4. Wait so captures are at least 5 s apart (the peek usually takes that long already).
+4. Keep captures at least 1 s apart (the peek already takes longer than that).
 5. Every 5 moves: one **scan** near where the fighting is. Every 10 moves: a one-line status.
 
 Budget: at most **400 Miro calls** this session. If you reach it, or Miro says a daily limit was hit,

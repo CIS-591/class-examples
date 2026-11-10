@@ -35,7 +35,7 @@ approve a prompt), say exactly what to click, then continue.
 4. ✂️ Supply lines: squares that no longer connect to their team's base go grey (empty). Cut through
    the enemy line and everything behind the cut drops out.
 5. Take all four enemy base squares and the whole enemy army is cut off: your team wins.
-6. One capture per player every 5 seconds. Touch anything other than a square's color and you're
+6. One capture per player per second. Touch anything other than a square's color and you're
    frozen for 5 seconds.
 
 **Strategy that works:** keep a solid line back to your base (your own squares can be cut off too),
