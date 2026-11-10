@@ -1,18 +1,14 @@
-# Color Wars: House Rules (Module 3, part 2: agent memory)
+# Color Wars: Red vs Blue (Module 3, part 2)
 
-Two teams, one shared Miro board, and your AI agent does the painting. A referee program judges
-every move by rules nobody tells you. Your agent learns them from the referee's feedback, and the
-game is about **what it remembers between rounds**:
+The whole class, one shared Miro board, two teams. Your AI agent does the fighting: it paints squares
+your team's color, attacks the other team, sets off bombs and cuts supply lines, while a referee
+program keeps everyone honest. Everyone plays at the same time.
 
-| Round    | Memory                                                  |
-| -------- | ------------------------------------------------------- |
-| Practice | none (just check everything works)                      |
-| 1        | **off**: your agent starts from zero                    |
-| 2        | **private**: your agent reads its own `MEMORY.md`       |
-| 3        | **team**: plus your team's shared Playbook on the board |
-| 4        | **team** again                                          |
+**Rules** (also on the board): capture squares that touch your team; enemy squares count too.
+💥 Gold squares are bombs. ✂️ Squares cut off from their base go grey. Take all four enemy base squares
+and their whole army is cut off: **your team wins**.
 
-You don't need to code. You type three commands: `/join` once, then `/play` and `/reflect` each round.
+You don't need to code. You type two commands: `/join` once, then `/play`.
 
 ## 1. Get the kit
 
@@ -64,7 +60,7 @@ codex mcp login miro
 ```
 
 Start Codex inside the `color-wars` folder. Codex reads `AGENTS.md` automatically. Where this page
-says `/join`, `/play` or `/reflect`, type "join as YOUR NAME", "play" or "reflect" instead.
+says `/join` or `/play`, type "join as YOUR NAME" or "play" instead.
 
 ## 4. Join the game (once)
 
@@ -75,18 +71,16 @@ says `/join`, `/play` or `/reflect`, type "join as YOUR NAME", "play" or "reflec
 Your agent puts a sticky note with your name in the **Lobby** and an **inbox card** for you in the
 **Inbox**. Within a minute the referee writes your team (RED or BLUE) on your card.
 
-## 5. Every round
+## 5. Play
 
-1. **Start a fresh session.** Claude Code: `/exit`, then `claude` again (or `/clear`). Codex: start a
-   new chat. Your agent must not remember the last round except through its memory files. That's the
-   experiment.
-2. When your instructor says go: `/play`. Your agent plays on its own until the banner says **OVER**.
-   Watch the board, not the terminal.
-3. When it stops: `/reflect`. Your agent writes its lessons to `MEMORY.md` (and, in team rounds, to
-   your team's Playbook on the board).
+When your instructor says go:
 
-Between rounds, open `MEMORY.md` and read what your agent decided to remember. You'll talk about it
-in the debrief.
+```text
+/play
+```
+
+Your agent fights on its own until a team wins. Watch the board, not the terminal: your name tag
+(`➤ Your Name`) jumps to every square you take, and the leaderboard on the right ranks the top players.
 
 ## If something goes wrong
 
@@ -94,7 +88,7 @@ in the debrief.
 | ------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | "team" / "not authorized" / board not found | You picked the wrong Miro team. `/mcp` → miro → clear authentication, sign in again, pick **CIS 591**. |
 | "daily limit" or "rate limit" from Miro     | Your Miro account ran out of calls for today. Tell your instructor and pair up with a teammate.        |
-| Your agent stopped or is stuck              | Type `/play` again. It picks up from your inbox card.                                                  |
+| Your agent stopped or is stuck              | Type `/play` again. It picks up where it left off.                                                     |
 | No team on your inbox card after a minute   | Tell your instructor (the referee may not be running yet), then `/join` again.                         |
 | Your agent wants to move or delete something | Say no. Only square colors may change.                                                                |
 

@@ -5,7 +5,7 @@ argument-hint: Your name
 
 # Join Color Wars
 
-Do this once per student, before the first round. Name: $ARGUMENTS (if that is empty or literally
+Do this once per student, before or during the battle. Name: $ARGUMENTS (if that is empty or literally
 "$ARGUMENTS", ask the student for their first name and last initial, then continue).
 
 1. Read `board.json`. If `player.json` already has an `inboxId`, the student has joined: peek at that
@@ -28,6 +28,6 @@ Do this once per student, before the first round. Name: $ARGUMENTS (if that is e
    "you are Team RED" or "Team BLUE", add `"team": "red"` or `"blue"` to `player.json`. If not yet, wait
    about 15 s (`sleep 15`) and peek again, at most 8 times. The referee moves your card into a neat
    slot; that's normal, the id stays the same.
-5. Tell the student in one line: their team, and "Start a fresh session each round, then run /play."
+5. Tell the student in one line: their team, and "Run /play when your instructor says go."
    If no team arrived after 8 peeks: "The referee isn't running yet; run /join again when the
    instructor says go." Don't create a second sticky or card in that case.
