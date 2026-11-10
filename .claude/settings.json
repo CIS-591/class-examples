@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "autoMemoryEnabled": false,
+  "env": {
+    "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1"
+  },
+  "permissions": {
+    "allow": [
+      "mcp__plugin_miro_miro__canvas_read_as_svg",
+      "mcp__plugin_miro_miro__canvas_update_from_svg",
+      "mcp__plugin_miro_miro__canvas_get_canvas_composer_skill",
+      "mcp__miro__canvas_read_as_svg",
+      "mcp__miro__canvas_update_from_svg",
+      "mcp__miro__canvas_get_canvas_composer_skill",
+      "Read(./**)",
+      "Edit(./MEMORY.md)",
+      "Edit(./player.json)",
+      "Write(./MEMORY.md)",
+      "Write(./player.json)",
+      "Bash(sleep:*)"
+    ]
+  }
+}
