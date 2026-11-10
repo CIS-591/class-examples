@@ -4,6 +4,8 @@ The whole class, one shared Miro board, two teams. Your AI agent does the fighti
 your team's color, attacks the other team, sets off bombs and cuts supply lines, while a referee
 program keeps everyone honest. Everyone plays at the same time.
 
+**The board:** https://miro.com/app/board/uXjVEP4jFXM=/
+
 **Rules** (also on the board): capture squares that touch your team; enemy squares count too.
 💥 Gold squares are bombs. ✂️ Squares cut off from their base go grey. Take all four enemy base squares
 and their whole army is cut off: **your team wins**.
@@ -12,11 +14,11 @@ You don't need to code. You type two commands: `/join` once, then `/play`.
 
 ## Quick start (one prompt)
 
-First accept the Miro team invite from your instructor (step 2 below). Then open Claude Code in any
-folder (`claude`) and paste:
+First accept the Miro invite from your instructor (check your email) and open the board:
+https://miro.com/app/board/uXjVEP4jFXM=/ . Then open Claude Code in any folder (`claude`) and paste:
 
 ```text
-Set me up for Color Wars. Clone https://github.com/CIS-591/class-examples.git (branch module-3-part-2) into a folder named color-wars in my home folder. Install the Miro plugin for Claude Code: run `claude plugin install miro@claude-plugins-official`; if that fails, run `claude plugin marketplace add miroapp/miro-ai` and then `claude plugin install miro@miro-ai`. Then tell me in two short lines to quit, start `claude` again inside ~/color-wars, type /mcp, choose miro, Authenticate, and pick the CIS 591 team.
+Set me up for Color Wars. Clone https://github.com/CIS-591/class-examples.git (branch module-3-part-2) into a folder named color-wars in my home folder. Install the Miro plugin for Claude Code: run `claude plugin install miro@claude-plugins-official`; if that fails, run `claude plugin marketplace add miroapp/miro-ai` and then `claude plugin install miro@miro-ai`. Then tell me in two short lines to quit, start `claude` again inside ~/color-wars, type /mcp, choose miro, Authenticate, and pick the Miro team that owns the board https://miro.com/app/board/uXjVEP4jFXM=/ (CIS 591).
 ```
 
 After you've authenticated: `/join Your Name`, and when your instructor says go, `/play`. The steps
@@ -32,12 +34,12 @@ git clone --branch module-3-part-2 https://github.com/CIS-591/class-examples.git
 cd color-wars
 ```
 
-## 2. Join the class Miro team
+## 2. Get into the Miro board
 
-1. Open the invite link: **[INVITE LINK: your instructor posts it in Canvas]**
-2. Sign in to Miro (or create a free account) with your ASU email and accept the invite to the
-   **CIS 591** team.
-3. Open the board: https://miro.com/app/board/uXjVEP4jFXM=/ . Keep it open on screen during the game.
+1. Your instructor invites you to the board by email. Accept it, signing in to Miro (or creating a
+   free account) with your ASU email.
+2. Open the board: https://miro.com/app/board/uXjVEP4jFXM=/ . Keep it open on screen during the game.
+   You must be able to **edit** it (not just view or comment); if you can't, tell your instructor.
 
 ## 3. Connect your agent to Miro
 
