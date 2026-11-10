@@ -10,6 +10,18 @@ and their whole army is cut off: **your team wins**.
 
 You don't need to code. You type two commands: `/join` once, then `/play`.
 
+## Quick start (one prompt)
+
+First accept the Miro team invite from your instructor (step 2 below). Then open Claude Code in any
+folder (`claude`) and paste:
+
+```text
+Set me up for Color Wars. Clone https://github.com/CIS-591/class-examples.git (branch module-3-part-2) into a folder named color-wars in my home folder. Install the Miro plugin for Claude Code: run `claude plugin install miro@claude-plugins-official`; if that fails, run `claude plugin marketplace add miroapp/miro-ai` and then `claude plugin install miro@miro-ai`. Then tell me in two short lines to quit, start `claude` again inside ~/color-wars, type /mcp, choose miro, Authenticate, and pick the CIS 591 team.
+```
+
+After you've authenticated: `/join Your Name`, and when your instructor says go, `/play`. The steps
+below are the same thing by hand.
+
 ## 1. Get the kit
 
 ```bash
