@@ -12,7 +12,7 @@ approve a prompt), say exactly what to click, then continue.
 
 - `board.json`: board URL, grid geometry, team colors, area boxes, the banner id and the id of every
   grid square (`cellIds`, label → id). Read it once per session.
-- `player.json`: who you play for (`name`, `team`, `inboxId`, `lobbyId`). Written by `/join`.
+- `player.json`: who you play for (`name`, `team`, `inboxId`). Written by `/join`.
 - `.claude/commands/join.md`, `play.md`: the two routines. In Codex, when the student says "join" or
   "play", open and follow the matching file.
 
@@ -33,8 +33,8 @@ approve a prompt), say exactly what to click, then continue.
 4. ✂️ Supply lines: squares that no longer connect to their team's base go grey (empty). Cut through
    the enemy line and everything behind the cut drops out.
 5. Take all four enemy base squares and the whole enemy army is cut off: your team wins.
-6. One capture per player every 10 seconds. Touch anything other than a square's color and you're
-   frozen for 30 seconds.
+6. One capture per player every 5 seconds. Touch anything other than a square's color and you're
+   frozen for 5 seconds.
 
 **Strategy that works:** keep a solid line back to your base (your own squares can be cut off too),
 grab nearby bombs, cut long thin enemy lines, and push toward the enemy base. Defend your base: if an
@@ -53,7 +53,7 @@ enemy square touches it, retake that square first.
 ## The only things you may change
 
 1. A grid square's **fill color**, to your own team's color, one square per move.
-2. During `/join`: one sticky note in the Lobby and one inbox card in the Inbox.
+2. During `/join`: one inbox card in the Inbox.
 
 Never move, resize, relabel, delete or create anything else, and never write on another player's card.
 The referee undoes it and freezes you.

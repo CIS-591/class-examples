@@ -68,8 +68,8 @@ says `/join` or `/play`, type "join as YOUR NAME" or "play" instead.
 /join Your First Name + Last Initial
 ```
 
-Your agent puts a sticky note with your name in the **Lobby** and an **inbox card** for you in the
-**Inbox**. Within a minute the referee writes your team (RED or BLUE) on your card.
+Your agent puts an **inbox card** with your name in the **Inbox** area of the board. Within a minute
+the referee writes your team (RED or BLUE) on it.
 
 ## 5. Play
 
