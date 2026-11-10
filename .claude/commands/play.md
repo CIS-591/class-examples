@@ -16,7 +16,7 @@ anything.
      student the battle hasn't started and stop.
    - `WINS` or `GAME OVER`: say who won and stop.
    - `LIVE`: go.
-3. **Scan** a 7 × 7 block around your team's front (Red starts near B12 on the left, Blue near Y12 on
+3. **Scan** a 7 × 7 block around your team's front (Red starts near B17 on the left, Blue near AI17 on
    the right; later, around the squares you took last).
 
 ## The move loop (2 Miro calls per move)

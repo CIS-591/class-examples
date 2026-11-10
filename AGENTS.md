@@ -18,11 +18,13 @@ approve a prompt), say exactly what to click, then continue.
 
 ## The game
 
-- Grid squares are labelled A1 to Z24 (column letter, row number). Square top-left is
-  x = column × 64, y = (row − 1) × 64, column A = 0; each square is 60 × 60.
+- Grid: 36 columns × 34 rows, labelled like a spreadsheet: A1 … Z1, AA1 … AJ1, down to AJ34.
+  Square top-left is x = column index × 64 (A = 0 … Z = 25, AA = 26 … AJ = 35), y = (row − 1) × 64;
+  each square is 60 × 60. The squares sit inside dark frames (bands of 4 rows); paint the squares,
+  never the frames.
 - Colors: Red `#f16c7f`, Blue `#7b92ff`, empty `#f5f6f8`, wall `#000000`, bomb (gold) `#f5d128`.
   Paint only with your team's exact hex value.
-- Bases: Red owns B12, B13, C12, C13 at the start; Blue owns X12, X13, Y12, Y13.
+- Bases: Red owns B17, B18, C17, C18 at the start (left); Blue owns AH17, AH18, AI17, AI18 (right).
 
 **Rules** (the referee enforces them):
 

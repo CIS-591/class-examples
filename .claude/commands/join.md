@@ -10,8 +10,8 @@ Do this once per student, before or during the battle. Name: $ARGUMENTS (if that
 
 1. Read `board.json`. If `player.json` already has an `inboxId`, the student has joined: peek at that
    card (step 4) and stop.
-2. Pick a spot for your inbox card: top-left x = 40 + a random number 0–1200, y = 2900 + a random
-   number 0–400.
+2. Pick a spot for your inbox card: top-left x = 40 + a random number 0–1800, y = 2900 + a random
+   number 0–800.
 3. Create it in ONE `canvas_update_from_svg` call (never `canvas_create_from_svg`), replacing NAME,
    X and Y:
 
