@@ -12,17 +12,18 @@ and their whole army is cut off: **your team wins**.
 
 You don't need to code. You type two commands: `/join` once, then `/play`.
 
-## Quick start (one prompt)
+## Quick start (one prompt, no restart)
 
 First accept the Miro invite from your instructor (check your email) and open the board:
 https://miro.com/app/board/uXjVEP4jFXM=/ . Then open Claude Code in any folder (`claude`) and paste:
 
 ```text
-Set me up for Color Wars. Clone https://github.com/CIS-591/class-examples.git (branch module-3-part-2) into a folder named color-wars in my home folder. Install the Miro plugin for Claude Code: run `claude plugin install miro@claude-plugins-official`; if that fails, run `claude plugin marketplace add miroapp/miro-ai` and then `claude plugin install miro@miro-ai`. Then tell me in two short lines to quit, start `claude` again inside ~/color-wars, type /mcp, choose miro, Authenticate, and pick the Miro team that owns the board https://miro.com/app/board/uXjVEP4jFXM=/ (CIS 591).
+Set me up and play Color Wars. 1) Clone https://github.com/CIS-591/class-examples.git (branch module-3-part-2) into ~/color-wars (if it already exists, git pull there instead). 2) Install the Miro plugin: run `claude plugin install miro@claude-plugins-official`; if that fails, run `claude plugin marketplace add miroapp/miro-ai` and then `claude plugin install miro@miro-ai`. 3) Tell me, in two short lines, to type /reload-plugins, then /mcp, choose miro, Authenticate, and pick the Miro team that owns https://miro.com/app/board/uXjVEP4jFXM=/ (CIS 591), and to say "done" after. Wait for me. 4) Then read ~/color-wars/AGENTS.md and follow it for the rest of this session; board.json and player.json live in ~/color-wars. Follow ~/color-wars/.claude/commands/join.md (ask me my first name and last initial), then follow ~/color-wars/.claude/commands/play.md until the game is over.
 ```
 
-After you've authenticated: `/join Your Name`, and when your instructor says go, `/play`. The steps
-below are the same thing by hand.
+You type only three things after pasting it: `/reload-plugins`, the `/mcp` sign-in, and "done". When
+Claude asks to use a Miro tool, choose "Yes, and don't ask again". The steps below are the same thing
+by hand.
 
 ## 1. Get the kit
 
