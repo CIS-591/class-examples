@@ -128,3 +128,14 @@ and dimensions (`EMBEDDING_MODEL`, `EMBEDDING_DIMENSIONS`) or the search
 returns nonsense. Tables lose their columns when turned into text. Embeddings match meaning
 better than exact strings, so an error code like C-47 can rank below other
 error-code passages (it was third in testing); keyword search alongside would fix that.
+
+## Module 4 starter: Support page
+
+**Summary:** An empty Support page titled "Refund Console", with Ask Copper
+(as finished in Module 3) docked on the right. Module 4 builds refunds here: a
+second agent, and a person approving the large ones.
+
+| Piece | Where | What it does |
+|---|---|---|
+| Page | `app/support/page.tsx` | The "Refund Console" title and nothing else yet, linked from the header as Support |
+| Chat panel | `components/copper/ask-copper.tsx` | With the `docked` prop it starts open and the page beside it stays clickable. It is the same single agent and tools as on the home page |

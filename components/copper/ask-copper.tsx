@@ -48,8 +48,15 @@ type Chats = { tools: Turn[]; noTools: Turn[] };
 
 const WORKING: Progress = { steps: [], reply: "", status: "working" };
 
-export function AskCopper({ aiConfigured }: { aiConfigured: boolean }) {
-  const [open, setOpen] = useState(false);
+export function AskCopper({
+  aiConfigured,
+  docked = false,
+}: {
+  aiConfigured: boolean;
+  /** Stays open beside the page, which remains clickable (the Support page). */
+  docked?: boolean;
+}) {
+  const [open, setOpen] = useState(docked);
   const [useTools, setUseTools] = useState(true);
   const [chats, setChats] = useState<Chats>({ tools: [], noTools: [] });
   const [draft, setDraft] = useState("");
@@ -132,11 +139,12 @@ export function AskCopper({ aiConfigured }: { aiConfigured: boolean }) {
           Ask Copper
         </Button>
       )}
-      <Sheet open={open} onOpenChange={setOpen}>
+      <Sheet open={open} onOpenChange={setOpen} modal={!docked}>
         <SheetContent
           data-testid="ask-copper"
           side="right"
           showCloseButton={false}
+          onInteractOutside={(event) => docked && event.preventDefault()}
           className="gap-0 p-0 data-[side=right]:w-full data-[side=right]:sm:max-w-md"
         >
           <header className="bg-chart-5 dark:bg-background text-white">

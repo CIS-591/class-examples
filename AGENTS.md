@@ -4,6 +4,7 @@ This repo is the CIS 591 class app for Copper State Labs, a fictional company.
 The company's facts live in `docs/copper-state-labs/product-bible.md`.
 The company's customer documents (PDFs: user guides, terms, FAQ) go in `public/docs/`; their file names are in `lib/copper/documents.ts`.
 Ask Copper, the site's chatbot, is `components/copper/ask-copper.tsx` (the panel) and `lib/copper/assistant/` (its tools, instructions and Server Action). New ways to answer customers go into Ask Copper as tools, not new pages.
+The Support page (`app/support/page.tsx`, at `/support`) is the Refund Console: an empty page with Ask Copper docked on the right. Module 4 builds refunds there.
 How the app fits together is in `docs/architecture.md`; add a section there when a module adds pages, tables or AI calls.
 
 ## Who you're working with

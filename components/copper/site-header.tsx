@@ -3,13 +3,14 @@ import { Logo } from "@/components/copper/logo";
 import { ModeToggle } from "@/components/copper/mode-toggle";
 import { cn } from "@/lib/utils";
 
-// Four links don't fit beside the logo on a phone, so two section links are
+// Five links don't fit beside the logo on a phone, so two section links are
 // hidden there.
 const LINKS = [
-  { href: "#products", label: "Products" },
-  { href: "#plus", label: "Copper Plus", phone: false },
-  { href: "#privacy", label: "Privacy", phone: false },
-  { href: "#ask", label: "Ask Copper" },
+  { href: "/#products", label: "Products" },
+  { href: "/#plus", label: "Copper Plus", phone: false },
+  { href: "/#privacy", label: "Privacy", phone: false },
+  { href: "/support", label: "Support" },
+  { href: "/#ask", label: "Ask Copper" },
 ];
 
 export function SiteHeader() {
@@ -24,7 +25,7 @@ export function SiteHeader() {
         </Link>
         <nav aria-label="Main" className="flex items-center gap-1 sm:gap-4">
           {LINKS.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className={cn(
@@ -33,7 +34,7 @@ export function SiteHeader() {
               )}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
           <ModeToggle />
         </nav>
