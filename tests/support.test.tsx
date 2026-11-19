@@ -26,6 +26,15 @@ describe("Support page", () => {
     expect(screen.queryByTestId("ask-copper-launcher")).toBeNull();
   });
 
+  it("Module 5 starter: shows an empty Release health card", async () => {
+    vi.stubEnv("GOOGLE_GENERATIVE_AI_API_KEY", "test-key");
+    const { default: Support } = await import("@/app/support/page");
+    render(<Support />);
+    const card = within(screen.getByTestId("release-health"));
+    expect(card.getByText("Release health")).toBeVisible();
+    expect(card.getByText("Is Ask Copper safe to ship?")).toBeVisible();
+  });
+
   it("shows the setup card in the chat when there is no AI key", async () => {
     vi.stubEnv("GOOGLE_GENERATIVE_AI_API_KEY", "");
     const { default: Support } = await import("@/app/support/page");

@@ -4,9 +4,10 @@ The starter app for CIS 591. Copper State Labs is a fictional Arizona company
 (see the [Product Bible](docs/copper-state-labs/product-bible.md)); each module
 adds a feature to this one app.
 
-This is the Module 3 starting point: the Copper site with Ask Copper, the
-shopping chatbot from Module 2. In class we teach Ask Copper to answer from
-the company's PDFs, with the page each answer came from. The
+This is the Module 5 starting point: the Copper site with Ask Copper, which
+hands refunds to a second agent, the Refund Desk, and a Refund Console where a
+supervisor approves refunds over $100 (Module 4). In class we make Ask Copper
+safe to ship. The
 [`docs/`](docs/README.md) folder explains the company and how the app fits
 together.
 
@@ -27,11 +28,13 @@ Or open the repo in **GitHub Codespaces**: it installs everything and starts the
 
 ## Environment variables
 
-There is one, and it's optional until a module needs it. Put it in `.env.local` (never commit it) and in your Vercel project settings.
+They're optional until a module needs them. Put them in `.env.local` (never commit it) and in your Vercel project settings.
 
-| Variable                       | Used for                        | Where to find it                                                              |
-| ------------------------------ | ------------------------------- | ----------------------------------------------------------------------------- |
-| `GOOGLE_GENERATIVE_AI_API_KEY` | All AI calls (`lib/ai/call.ts`) | [Google AI Studio](https://aistudio.google.com) > Get API key (free, no card) |
+| Variable                                     | Used for                                | Where to find it                                                                            |
+| -------------------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `GOOGLE_GENERATIVE_AI_API_KEY`               | All AI calls (`lib/ai/call.ts`)         | [Google AI Studio](https://aistudio.google.com) > Get API key (free, no card)               |
+| `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY` | Module 5: evals, tracing and monitoring | [Langfuse Cloud](https://cloud.langfuse.com) > new project > Create API keys (free)         |
+| `LANGFUSE_BASE_URL`                          | Module 5: your Langfuse region          | The `LANGFUSE_BASE_URL` Langfuse shows next to your keys, e.g. `https://cloud.langfuse.com` |
 
 ## Commands
 

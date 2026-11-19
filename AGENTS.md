@@ -5,6 +5,8 @@ The company's facts live in `docs/copper-state-labs/product-bible.md`.
 The company's customer documents (PDFs: user guides, terms, FAQ) go in `public/docs/`; their file names are in `lib/copper/documents.ts`.
 Ask Copper, the site's chatbot, is `components/copper/ask-copper.tsx` (the panel) and `lib/copper/assistant/` (its tools, instructions and Server Action). New ways to answer customers go into Ask Copper as tools, not new pages.
 The Support page (`app/support/page.tsx`, at `/support`) is the Refund Console: the refund requests, with Approve and Deny for the ones over $100, and Ask Copper docked on the right. Module 4: Copper hands refunds to a second agent, the Refund Desk (`REFUND_DESK_INSTRUCTIONS`, `refundDeskTools`); refund rules are code in `lib/copper/refunds.ts` (change them test-first in `tests/refunds.test.ts`), and requests are in `lib/copper/refund-requests.ts`.
+Module 5 makes Ask Copper safe to ship. Use TDD for one deterministic component. Add a golden-set evaluation with an AI judge, and production monitoring.
+Use Langfuse for evals, tracing and monitoring. Don't add other eval or monitoring tools. The Langfuse keys are `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY` and `LANGFUSE_BASE_URL` in `.env.local`. The AI judge uses Gemini through `lib/ai/call.ts`, like every other AI call.
 How the app fits together is in `docs/architecture.md`; add a section there when a module adds pages, tables or AI calls.
 
 ## Who you're working with
