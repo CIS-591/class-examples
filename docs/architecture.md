@@ -129,13 +129,39 @@ returns nonsense. Tables lose their columns when turned into text. Embeddings ma
 better than exact strings, so an error code like C-47 can rank below other
 error-code passages (it was third in testing); keyword search alongside would fix that.
 
-## Module 4 starter: Support page
+## Module 4: Refund Desk agent, handoff and approvals
 
-**Summary:** An empty Support page titled "Refund Console", with Ask Copper
-(as finished in Module 3) docked on the right. Module 4 builds refunds here: a
-second agent, and a person approving the large ones.
+**Summary:** Ask Copper hands refund questions to a second agent, the Refund
+Desk, which has its own instructions and tools. The refund rules are plain
+code, so the model never decides a refund or its amount. Refunds over $100
+wait on the Refund Console (`/support`) until a Copper Crew supervisor
+approves or denies them: a person in the loop.
 
 | Piece | Where | What it does |
 |---|---|---|
-| Page | `app/support/page.tsx` | The "Refund Console" title and nothing else yet, linked from the header as Support |
-| Chat panel | `components/copper/ask-copper.tsx` | With the `docked` prop it starts open and the page beside it stays clickable. It is the same single agent and tools as on the home page |
+| Handoff | `lib/copper/assistant/tools.ts` (`handoff_to_refunds`), `ask.ts` | Copper's tool. Copper stops at the handoff (`hasToolCall`); `askCopper` then streams the Refund Desk on the same conversation, with Copper's one-sentence note added to its instructions |
+| Refund Desk | `lib/copper/assistant/instructions.ts` (`REFUND_DESK_INSTRUCTIONS`), `tools.ts` (`refundDeskTools`) | `check_refund` (the rules), `submit_refund` (records a refund the rules allow; the rules set the amount), `refund_status` (looks up RF-1001 and so on). Copper can't use these |
+| Refund rules | `lib/copper/refunds.ts`, `tests/refunds.test.ts` | `refundDecision()`: returns (30 days), warranty (2 years Home, 1 year Notes, no heat damage), Copper Plus (annual within 14 days, no partial months), outage refunds to a supervisor. Over `APPROVAL_LIMIT_USD` ($100) is `needs_approval` |
+| Refund requests | `lib/copper/refund-requests.ts` | A JSON file, `.data/refund-requests.json` (not in git; `REFUND_REQUESTS_FILE` moves it). `refund` outcomes are `paid` at once; `needs_approval` ones are `pending` until a supervisor sets `approved` or `denied` |
+| Refund Console | `app/support/page.tsx`, `components/copper/refund-queue.tsx`, `lib/copper/refund-actions.ts` | The request table with Approve and Deny on pending rows (server actions). The chat fires `copper:refunds-changed` after a `submit_refund`, so the table reloads on its own |
+| Chat panel | `components/copper/ask-copper.tsx` | Shows the handoff as its own station, with Copper's note and the Refund Desk's tools; each step and the reply are labelled with the agent that made them |
+| AI calls | `{ module: 2, feature: "ask-copper" }`, `{ module: 4, feature: "refund-desk" }` | One Copper call, plus one Refund Desk call after a handoff |
+
+**Data flow:** question → Copper → `handoff_to_refunds` → Refund Desk →
+`check_refund` → `submit_refund` → request in `.data/refund-requests.json` →
+Refund Console row → supervisor Approve or Deny → `refund_status` tells the
+customer.
+
+**Decisions and trade-offs:** A second agent keeps refund instructions and
+tools away from shopping, so Copper can't promise money and the Refund Desk
+can't wander into sales. A handoff (the Refund Desk answers) instead of an
+agent-as-a-tool (Copper relays its answer) keeps one voice per reply and
+shows students who decided. Each new turn starts at Copper, which hands off
+again, so the client keeps no agent state; the cost is one extra short Copper
+call per refund turn. Requests live in a local JSON file, not a database:
+no setup for students, and they survive a restart.
+
+**Risks and open questions:** Copper may answer a refund question itself
+instead of handing off; its instructions forbid it, and Module 5's evals
+check it. The JSON file isn't safe for many users at once or on Vercel's
+read-only file system: a real deployment needs a database table.

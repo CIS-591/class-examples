@@ -2,6 +2,9 @@
 // lib/copper/catalog.ts and stock from lib/copper/inventory.ts (Module 2);
 // search_docs finds passages in the customer documents (Module 3). So the
 // chatbot never has to make them up.
+// Module 4: handoff_to_refunds passes refund questions to the Refund Desk, a
+// second agent with its own tools (refundDeskTools, below): the refund rules
+// in lib/copper/refunds.ts and the requests in lib/copper/refund-requests.ts.
 // Each tool returns plain data; the model writes the reply around it.
 import { tool } from "ai";
 import { z } from "zod";
@@ -15,6 +18,11 @@ import {
 import { DOCUMENTS, pageUrl } from "@/lib/copper/documents";
 import { readInventory } from "@/lib/copper/inventory";
 import { PASSAGES } from "@/lib/copper/passages";
+import {
+  createRefundRequest,
+  getRefundRequest,
+} from "@/lib/copper/refund-requests";
+import { refundDecision } from "@/lib/copper/refunds";
 
 export type ProductList = {
   products: {
@@ -269,5 +277,72 @@ export const copperTools = {
         ),
     }),
     execute: async ({ query }) => searchDocs(query),
+  }),
+  handoff_to_refunds: tool({
+    description:
+      "Hands the customer to the Refund Desk, the agent that handles refunds, returns and refund status. The Refund Desk answers next, so write no reply of your own.",
+    inputSchema: z.object({
+      summary: z
+        .string()
+        .describe(
+          "One sentence for the Refund Desk: what the customer bought, how long ago, why, and what they want.",
+        ),
+    }),
+    execute: async ({ summary }) => ({ to: "Refund Desk", summary }),
+  }),
+};
+
+/** One refund request, as check_refund and submit_refund take it. */
+const refundRequestInput = z.object({
+  item: z.enum([
+    "copper-home",
+    "copper-notes",
+    "copper-plus-monthly",
+    "copper-plus-annual",
+  ]),
+  daysSincePurchase: z
+    .number()
+    .int()
+    .min(0)
+    .describe("Days since the customer bought the device or plan."),
+  reason: z
+    .enum(["changed_mind", "defect", "heat_damage", "outage"])
+    .describe(
+      "changed_mind for any reason that isn't one of the others; heat_damage if the device overheated in a vehicle; outage for a Copper service outage or bug.",
+    ),
+});
+
+/** The Refund Desk's tools (Module 4). Copper can't use these. */
+export const refundDeskTools = {
+  check_refund: tool({
+    description:
+      "Checks Copper State Labs' refund rules for one request: a Copper Home or Copper Notes device, or a monthly or annual Copper Plus plan. Returns the outcome (refund, needs_approval, warranty_claim or denied), the amount, the rule and its source.",
+    inputSchema: refundRequestInput,
+    execute: async (input) => refundDecision(input),
+  }),
+  submit_refund: tool({
+    description:
+      "Submits a refund the rules allow. A refund outcome is paid now; needs_approval waits for a Copper Crew supervisor. The rules set the amount. Returns the request number and its status. Denials and warranty claims can't be submitted.",
+    inputSchema: refundRequestInput,
+    execute: async (input) => {
+      const decision = refundDecision(input);
+      if (
+        decision.outcome !== "refund" &&
+        decision.outcome !== "needs_approval"
+      )
+        return {
+          submitted: false,
+          outcome: decision.outcome,
+          rule: decision.rule,
+        };
+      return { submitted: true, ...createRefundRequest(input, decision) };
+    },
+  }),
+  refund_status: tool({
+    description:
+      "Looks up a submitted refund request by its number, like RF-1001: paid, pending (a supervisor hasn't decided yet), approved or denied.",
+    inputSchema: z.object({ id: z.string().describe("Like RF-1001.") }),
+    execute: async ({ id }) =>
+      getRefundRequest(id) ?? { error: `No refund request ${id}.` },
   }),
 };

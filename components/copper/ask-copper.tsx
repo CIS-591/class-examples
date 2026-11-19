@@ -9,12 +9,14 @@ import {
   ArrowRightIcon,
   ArrowUpIcon,
   BrainIcon,
+  HandshakeIcon,
   MessageCircleIcon,
   TriangleAlertIcon,
   WrenchIcon,
   XIcon,
 } from "lucide-react";
 import { type ReactNode, useEffect, useRef, useState } from "react";
+import { REFUNDS_CHANGED } from "@/components/copper/refund-queue";
 import { SetupRequired } from "@/components/setup-required";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,7 +32,10 @@ import { readLive } from "@/lib/ai/live";
 import { askCopper, type ChatMessage } from "@/lib/copper/assistant/ask";
 import { splitCitations } from "@/lib/copper/assistant/citations";
 import {
+  AGENT_NAMES,
+  COPPER_TOOL_LABELS,
   type Progress,
+  REFUND_DESK_TOOL_LABELS,
   type ToolStep,
   TOOL_LABELS,
 } from "@/lib/copper/assistant/progress";
@@ -116,7 +121,16 @@ export function AskCopper({
         messages,
         useTools: chat === "tools",
       });
-      for await (const update of readLive(progress)) setProgress(update);
+      let last: Progress | undefined;
+      for await (const update of readLive(progress)) {
+        setProgress(update);
+        last = update;
+      }
+      // Module 4: tell the Refund Console a new refund request came in.
+      if (
+        last?.steps.some((s) => s.type === "tool" && s.name === "submit_refund")
+      )
+        window.dispatchEvent(new Event(REFUNDS_CHANGED));
     } catch {
       setProgress({
         steps: [],
@@ -292,26 +306,11 @@ function Answer({
             useTools ? "Tools Copper can use" : "Tools given to Copper: none"
           }
         >
-          <div className="flex flex-wrap gap-1.5">
-            {Object.keys(TOOL_LABELS).map((name) => (
-              <span
-                key={name}
-                className={cn(
-                  "rounded-md px-2 py-0.5 font-mono text-xs",
-                  !useTools &&
-                    "text-muted-foreground bg-background line-through",
-                  useTools &&
-                    used.has(name) &&
-                    "bg-accent font-bold text-white",
-                  useTools &&
-                    !used.has(name) &&
-                    "bg-background text-muted-foreground",
-                )}
-              >
-                {name}
-              </span>
-            ))}
-          </div>
+          <ToolChips
+            names={Object.keys(COPPER_TOOL_LABELS)}
+            used={used}
+            useTools={useTools}
+          />
           {!useTools && (
             <p className="text-muted-foreground mt-1.5 text-xs">
               Copper has to answer from memory alone.
@@ -320,12 +319,36 @@ function Answer({
         </Station>
 
         {steps.map((step, i) =>
-          step.type === "thinking" ? (
+          step.type === "handoff" ? (
+            <Station
+              key={i}
+              node={<HandshakeIcon className="size-3" />}
+              nodeClass="bg-primary"
+              label={`Copper handed you to the ${AGENT_NAMES[step.to]}`}
+            >
+              <div
+                data-testid="handoff"
+                className="bg-card space-y-2 rounded-xl border p-3 text-sm"
+              >
+                <p className="text-muted-foreground text-xs">
+                  Copper&apos;s note: {step.summary}
+                </p>
+                <p className="text-muted-foreground text-[11px] font-semibold tracking-widest uppercase">
+                  Tools the {AGENT_NAMES[step.to]} can use
+                </p>
+                <ToolChips
+                  names={Object.keys(REFUND_DESK_TOOL_LABELS)}
+                  used={used}
+                  useTools
+                />
+              </div>
+            </Station>
+          ) : step.type === "thinking" ? (
             <Station
               key={i}
               node={<BrainIcon className="size-3" />}
               nodeClass={useTools ? "bg-primary" : "bg-chart-3"}
-              label="Copper is thinking"
+              label={`${AGENT_NAMES[step.agent ?? "copper"]} is thinking`}
             >
               <p
                 data-testid="thinking"
@@ -339,11 +362,9 @@ function Answer({
               key={i}
               node={<WrenchIcon className="size-3" />}
               nodeClass="bg-accent"
-              label={
-                step.state === "calling"
-                  ? "Copper is calling a tool"
-                  : "Copper called a tool"
-              }
+              label={`${AGENT_NAMES[step.agent ?? "copper"]} ${
+                step.state === "calling" ? "is calling" : "called"
+              } a tool`}
             >
               <ToolCard step={step} number={++toolCount} />
             </Station>
@@ -376,7 +397,9 @@ function Answer({
 
       {(reply || !working) && (
         <div className="bg-card ml-2 rounded-2xl rounded-tl-sm border p-4 shadow-xs">
-          <p className="text-primary mb-1 text-xs font-bold">Copper</p>
+          <p className="text-primary mb-1 text-xs font-bold">
+            {AGENT_NAMES[progress.agent ?? "copper"]}
+          </p>
           {!useTools && (
             <div className="border-chart-3 bg-chart-3/10 mb-3 rounded-lg border p-3 text-xs">
               <p className="flex items-center gap-1.5 font-bold">
@@ -399,6 +422,37 @@ function Answer({
           </p>
         </div>
       )}
+    </div>
+  );
+}
+
+/** The tools an agent can use; the ones it used are filled in. */
+function ToolChips({
+  names,
+  used,
+  useTools,
+}: {
+  names: string[];
+  used: Set<string>;
+  useTools: boolean;
+}) {
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {names.map((name) => (
+        <span
+          key={name}
+          className={cn(
+            "rounded-md px-2 py-0.5 font-mono text-xs",
+            !useTools && "text-muted-foreground bg-background line-through",
+            useTools && used.has(name) && "bg-accent font-bold text-white",
+            useTools &&
+              !used.has(name) &&
+              "bg-background text-muted-foreground",
+          )}
+        >
+          {name}
+        </span>
+      ))}
     </div>
   );
 }
@@ -488,7 +542,8 @@ function ToolCard({ step, number }: { step: ToolStep; number: number }) {
       </div>
       <div className="space-y-2 px-3 py-3">
         <p className="text-muted-foreground flex items-center gap-1 text-[11px] font-semibold tracking-widest uppercase">
-          <ArrowRightIcon className="size-3" /> What Copper sent
+          <ArrowRightIcon className="size-3" /> What{" "}
+          {AGENT_NAMES[step.agent ?? "copper"]} sent
         </p>
         {step.input === undefined ? (
           <p className="text-muted-foreground text-xs italic">
@@ -633,6 +688,41 @@ function ToolOutput({ name, output }: { name: string; output: any }) {
       </div>
     );
   }
+  if (name === "check_refund" && output?.outcome)
+    return (
+      <div className="space-y-1 text-xs">
+        <div className="flex justify-between">
+          <span className="font-medium">
+            {output.outcome.replace("_", " ")}
+          </span>
+          <span className="font-mono">{formatUsd(output.amountUsd)}</span>
+        </div>
+        <p>{output.rule}</p>
+        <p className="text-muted-foreground">{output.source}</p>
+      </div>
+    );
+  if ((name === "submit_refund" || name === "refund_status") && output?.id)
+    return (
+      <div className="space-y-1 text-xs">
+        <div className="flex justify-between">
+          <span className="font-mono font-bold">{output.id}</span>
+          <span className="font-mono">{formatUsd(output.amountUsd)}</span>
+        </div>
+        <p>
+          {output.status === "pending"
+            ? "Pending: waiting for a supervisor on the Refund Console"
+            : output.status === "paid"
+              ? "Paid: back to the original payment within 10 business days"
+              : `${output.status[0].toUpperCase()}${output.status.slice(1)} by a supervisor`}
+        </p>
+      </div>
+    );
+  if (name === "handoff_to_refunds" && output?.summary)
+    return (
+      <p className="text-xs">
+        To the {output.to}: {output.summary}
+      </p>
+    );
   if (name === "search_docs" && output?.matches)
     return (
       <ol className="space-y-2 text-xs">

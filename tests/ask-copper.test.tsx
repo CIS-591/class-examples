@@ -741,7 +741,7 @@ describe("Part C: askCopper", () => {
     expect(logged[0]).toMatchObject({
       module: 2,
       feature: "ask-copper",
-      model: "google/gemini-2.5-flash",
+      model: "google/gemini-3.5-flash-lite",
       ok: true,
     });
   });
