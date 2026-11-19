@@ -7,6 +7,7 @@ Ask Copper, the site's chatbot, is `components/copper/ask-copper.tsx` (the panel
 The Support page (`app/support/page.tsx`, at `/support`) is the Refund Console: the refund requests, with Approve and Deny for the ones over $100, and Ask Copper docked on the right. Module 4: Copper hands refunds to a second agent, the Refund Desk (`REFUND_DESK_INSTRUCTIONS`, `refundDeskTools`); refund rules are code in `lib/copper/refunds.ts` (change them test-first in `tests/refunds.test.ts`), and requests are in `lib/copper/refund-requests.ts`.
 Module 5 makes Ask Copper safe to ship. Use TDD for one deterministic component. Add a golden-set evaluation with an AI judge, and production monitoring.
 Use Langfuse for evals, tracing and monitoring. Don't add other eval or monitoring tools. The Langfuse keys are `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY` and `LANGFUSE_BASE_URL` in `.env.local`. The AI judge uses Gemini through `lib/ai/call.ts`, like every other AI call.
+Run the golden-set evaluation in GitHub Actions on every pull request, and block merges to `main` when it fails. The keys go in the repo's Actions secrets.
 How the app fits together is in `docs/architecture.md`; add a section there when a module adds pages, tables or AI calls.
 
 ## Who you're working with
