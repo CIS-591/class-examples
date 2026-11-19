@@ -21,22 +21,36 @@ export type RefundRecord = RefundRequest & {
   decidedAt?: string;
 };
 
-/** The JSON file. REFUND_REQUESTS_FILE moves it (tests and npm run eval do). */
+/**
+ * The JSON file. REFUND_REQUESTS_FILE moves it (tests and npm run eval do).
+ * turbopackIgnore: it's data written at run time, not part of the build.
+ */
 const storeFile = () =>
   process.env.REFUND_REQUESTS_FILE ??
-  join(process.cwd(), ".data", "refund-requests.json");
+  join(
+    /* turbopackIgnore: true */ process.cwd(),
+    ".data",
+    "refund-requests.json",
+  );
 
 function read(): RefundRecord[] {
   try {
-    return JSON.parse(readFileSync(storeFile(), "utf8"));
+    return JSON.parse(
+      readFileSync(/* turbopackIgnore: true */ storeFile(), "utf8"),
+    );
   } catch {
     return [];
   }
 }
 
 function write(records: RefundRecord[]) {
-  mkdirSync(dirname(storeFile()), { recursive: true });
-  writeFileSync(storeFile(), `${JSON.stringify(records, null, 2)}\n`);
+  mkdirSync(/* turbopackIgnore: true */ dirname(storeFile()), {
+    recursive: true,
+  });
+  writeFileSync(
+    /* turbopackIgnore: true */ storeFile(),
+    `${JSON.stringify(records, null, 2)}\n`,
+  );
 }
 
 /** Every request, newest first. */
