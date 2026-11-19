@@ -166,14 +166,9 @@ instead of handing off; its instructions forbid it, and Module 5's evals
 check it. The JSON file isn't safe for many users at once or on Vercel's
 read-only file system: a real deployment needs a database table.
 
-## Module 5 starter: Release health
+## Module 5 starter
 
-**Summary:** Module 4 as finished, plus an empty "Release health" card on the
-Refund Console. Module 5 makes Ask Copper safe to ship: TDD for one
-deterministic component, a golden-set evaluation with an AI judge, and
-production monitoring, all with Langfuse.
-
-| Piece | Where | What it does |
-|---|---|---|
-| Card | `components/copper/release-health.tsx` | An empty card on the Refund Console that asks "Is Ask Copper safe to ship?" |
-
+**Summary:** Module 4 as finished. Module 5 makes Ask Copper safe to ship: TDD
+for one deterministic component, a golden-set evaluation with an AI judge, and
+production monitoring, all with Langfuse. The eval runs in GitHub Actions on
+every pull request, and `main` is protected so a failing eval blocks the merge.
