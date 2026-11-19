@@ -4,10 +4,10 @@ The starter app for CIS 591. Copper State Labs is a fictional Arizona company
 (see the [Product Bible](docs/copper-state-labs/product-bible.md)); each module
 adds a feature to this one app.
 
-This is the Module 5 starting point: the Copper site with Ask Copper, which
-hands refunds to a second agent, the Refund Desk, and a Refund Console where a
-supervisor approves refunds over $100 (Module 4). In class we make Ask Copper
-safe to ship. The
+This is the Module 5 starting point: the Copper site with Ask Copper and the
+Refund Console from Module 4, where Copper hands refunds to the Refund agent
+and a person approves or rejects refunds over the auto-refund limit. In class
+we make Ask Copper safe to ship. The
 [`docs/`](docs/README.md) folder explains the company and how the app fits
 together.
 

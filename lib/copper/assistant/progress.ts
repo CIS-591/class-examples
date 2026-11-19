@@ -2,12 +2,12 @@
 // summaries, each tool call (with what went in and what came out), and the
 // reply. The panel draws this as it changes.
 
-/** Who is answering: Copper, or the Refund Desk after a handoff (Module 4). */
-export type Agent = "copper" | "refund-desk";
+/** Who is answering: Copper, or the Refund agent after a handoff (Module 4). */
+export type Agent = "copper" | "refund";
 
 export const AGENT_NAMES: Record<Agent, string> = {
   copper: "Copper",
-  "refund-desk": "Refund Desk",
+  refund: "Refund agent",
 };
 
 export type ThinkingStep = { type: "thinking"; text: string; agent?: Agent };
@@ -24,8 +24,8 @@ export type ToolStep = {
   output?: unknown;
 };
 
-/** Copper passed the conversation to the Refund Desk, with a note. */
-export type HandoffStep = { type: "handoff"; to: Agent; summary: string };
+/** One agent passed the conversation to the other. */
+export type HandoffStep = { type: "handoff"; from: Agent; to: Agent };
 
 export type Step = ThinkingStep | ToolStep | HandoffStep;
 
@@ -49,23 +49,26 @@ export function toolCallsOf(progress: Progress) {
  * panel lists these, so it lives here (and not in tools.ts, which reads the
  * database and can't be imported by a client component).
  */
-export const COPPER_TOOL_LABELS: Record<string, string> = {
+export const TOOL_LABELS: Record<string, string> = {
   get_products: "Listing the products",
   get_prices: "Looking up prices",
   calculate_cost: "Working out the cost",
   check_availability: "Checking stock",
   search_docs: "Searching the documents",
-  handoff_to_refunds: "Handing off to the Refund Desk",
+  transfer_to_refund_agent: "Handing off to the Refund agent",
+  get_orders: "Looking up the orders",
+  request_refund: "Requesting the refund",
+  transfer_to_copper: "Handing back to Copper",
 };
 
-/** The Refund Desk's tools (Module 4). */
-export const REFUND_DESK_TOOL_LABELS: Record<string, string> = {
-  check_refund: "Checking the refund rules",
-  submit_refund: "Submitting the refund",
-  refund_status: "Looking up the refund",
-};
-
-export const TOOL_LABELS: Record<string, string> = {
-  ...COPPER_TOOL_LABELS,
-  ...REFUND_DESK_TOOL_LABELS,
+/** Each agent's own tools (Module 4), as the panel lists them. */
+export const AGENT_TOOLS: Record<Agent, string[]> = {
+  copper: [
+    "get_products",
+    "get_prices",
+    "calculate_cost",
+    "check_availability",
+    "search_docs",
+  ],
+  refund: ["get_orders", "request_refund", "transfer_to_copper"],
 };

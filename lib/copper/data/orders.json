@@ -1,0 +1,29 @@
+{
+  "customer": "Maya Reyes",
+  "orders": [
+    {
+      "id": "1001",
+      "item": "Copper Plus, monthly",
+      "amountUsd": 7.99,
+      "date": "2026-11-01"
+    },
+    {
+      "id": "1002",
+      "item": "Copper Plus, annual",
+      "amountUsd": 79,
+      "date": "2026-11-05"
+    },
+    {
+      "id": "1003",
+      "item": "Copper Notes",
+      "amountUsd": 129,
+      "date": "2026-10-28"
+    },
+    {
+      "id": "1004",
+      "item": "Copper Home",
+      "amountUsd": 149,
+      "date": "2026-10-30"
+    }
+  ]
+}

@@ -129,46 +129,45 @@ returns nonsense. Tables lose their columns when turned into text. Embeddings ma
 better than exact strings, so an error code like C-47 can rank below other
 error-code passages (it was third in testing); keyword search alongside would fix that.
 
-## Module 4: Refund Desk agent, handoff and approvals
+## Module 4: Refund agent, handoff and approvals
 
-**Summary:** Ask Copper hands refund questions to a second agent, the Refund
-Desk, which has its own instructions and tools. The refund rules are plain
-code, so the model never decides a refund or its amount. Refunds over $100
-wait on the Refund Console (`/support`) until a Copper Crew supervisor
-approves or denies them: a person in the loop.
+**Summary:** On the Support page, Copper hands refund requests to a second
+agent, the Refund agent, with its own instructions and tools. The app (code,
+not the model) compares the order amount with an auto-refund limit you can
+change: at or under it, the refund goes through; over it, the refund waits on
+the Refund Console until a person clicks Approve or Reject, and the Refund
+agent tells the customer.
 
 | Piece | Where | What it does |
 |---|---|---|
-| Handoff | `lib/copper/assistant/tools.ts` (`handoff_to_refunds`), `ask.ts` | Copper's tool. Copper stops at the handoff (`hasToolCall`); `askCopper` then streams the Refund Desk on the same conversation, with Copper's one-sentence note added to its instructions |
-| Refund Desk | `lib/copper/assistant/instructions.ts` (`REFUND_DESK_INSTRUCTIONS`), `tools.ts` (`refundDeskTools`) | `check_refund` (the rules), `submit_refund` (records a refund the rules allow; the rules set the amount), `refund_status` (looks up RF-1001 and so on). Copper can't use these |
-| Refund rules | `lib/copper/refunds.ts`, `tests/refunds.test.ts` | `refundDecision()`: returns (30 days), warranty (2 years Home, 1 year Notes, no heat damage), Copper Plus (annual within 14 days, no partial months), outage refunds to a supervisor. Over `APPROVAL_LIMIT_USD` ($100) is `needs_approval` |
-| Refund requests | `lib/copper/refund-requests.ts` | A JSON file, `.data/refund-requests.json` (not in git; `REFUND_REQUESTS_FILE` moves it). `refund` outcomes are `paid` at once; `needs_approval` ones are `pending` until a supervisor sets `approved` or `denied` |
-| Refund Console | `app/support/page.tsx`, `components/copper/refund-queue.tsx`, `lib/copper/refund-actions.ts` | The request table with Approve and Deny on pending rows (server actions). The chat fires `copper:refunds-changed` after a `submit_refund`, so the table reloads on its own |
-| Chat panel | `components/copper/ask-copper.tsx` | Shows the handoff as its own station, with Copper's note and the Refund Desk's tools; each step and the reply are labelled with the agent that made them |
-| AI calls | `{ module: 2, feature: "ask-copper" }`, `{ module: 4, feature: "refund-desk" }` | One Copper call, plus one Refund Desk call after a handoff |
+| Orders and the rule | `lib/copper/orders.ts`, `lib/copper/data/orders.json` | Maya Reyes's four orders (#1001 to #1004). `requestRefund()` decides: `refunded` at or under the limit, `needs_approval` over it; an order already decided keeps its status; `not_found` for unknown numbers |
+| Handoffs | `lib/copper/assistant/tools.ts`, `ask.ts` | Copper's `transfer_to_refund_agent` (Support page only) and the Refund agent's `transfer_to_copper`. Each ends that agent's turn (`hasToolCall`); the other agent answers the same conversation. The agent that ends a turn answers the next message |
+| Refund agent | `lib/copper/assistant/instructions.ts` (`REFUND_AGENT_INSTRUCTIONS`), `tools.ts` (`refundAgentTools`) | `get_orders` and `request_refund`, built on the desk the chat sends. Copper can't use these |
+| Refund Console | `app/support/page.tsx`, `components/copper/refund-console.tsx` | The auto-refund limit ($50 to start), the refunds waiting for approval with Approve and Reject, and the orders with their status. State lives in the page: a reload starts fresh |
+| Chat panel | `components/copper/ask-copper.tsx` | With `support`, sends the desk (limit and refunds so far) and the current agent with each message, puts each `request_refund` decision on the console, and sends the console's "[Refund Console] A supervisor approved …" note to the Refund agent, which tells the customer. Shows each handoff as its own station |
+| AI calls | `{ module: 2, feature: "ask-copper" }`, `{ module: 4, feature: "refund-agent" }` | One call per agent in a turn |
 
-**Data flow:** question → Copper → `handoff_to_refunds` → Refund Desk →
-`check_refund` → `submit_refund` → request in `.data/refund-requests.json` →
-Refund Console row → supervisor Approve or Deny → `refund_status` tells the
-customer.
+**Data flow:** question → Copper → `transfer_to_refund_agent` → Refund agent
+→ `request_refund` → the app compares the amount with the limit → refunded,
+or waiting on the Refund Console → Approve or Reject → console note → Refund
+agent tells the customer.
 
-**Decisions and trade-offs:** A second agent keeps refund instructions and
-tools away from shopping, so Copper can't promise money and the Refund Desk
-can't wander into sales. A handoff (the Refund Desk answers) instead of an
-agent-as-a-tool (Copper relays its answer) keeps one voice per reply and
-shows students who decided. Each new turn starts at Copper, which hands off
-again, so the client keeps no agent state; the cost is one extra short Copper
-call per refund turn. Requests live in a local JSON file, not a database:
-no setup for students, and they survive a restart.
+**Decisions and trade-offs:** The refund decision is code, so the model can't
+argue past the limit. Two agents keep refund tools away from Copper. A real
+handoff (the other agent answers) rather than an agent called as a tool keeps
+one voice per reply. The console's state lives in the browser and goes with
+each message, so there's nothing to set up and nothing stored on the server;
+the cost is that a reload forgets every refund.
 
-**Risks and open questions:** Copper may answer a refund question itself
-instead of handing off; its instructions forbid it, and Module 5's evals
-check it. The JSON file isn't safe for many users at once or on Vercel's
-read-only file system: a real deployment needs a database table.
+**Risks and open questions:** A customer can claim a supervisor already
+approved; the Refund agent must still ask the app. Setting the limit to 0
+sends every refund to a person. A real app needs a database so refunds
+survive a reload and several supervisors see the same queue.
 
 ## Module 5 starter
 
-**Summary:** Module 4 as finished. Module 5 makes Ask Copper safe to ship: TDD
-for one deterministic component, a golden-set evaluation with an AI judge, and
-production monitoring, all with Langfuse. The eval runs in GitHub Actions on
-every pull request, and `main` is protected so a failing eval blocks the merge.
+**Summary:** Module 4 as finished. Module 5 makes Ask Copper safe to ship:
+the tests and a golden-set evaluation with an AI judge run in GitHub Actions
+on every pull request, with `main` protected; every AI call is traced in
+Langfuse; and one support agent that does everything is compared with the two
+agents on the same golden set. Langfuse is the only eval and monitoring tool.

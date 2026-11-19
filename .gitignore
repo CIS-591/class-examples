@@ -44,5 +44,3 @@ next-env.d.ts
 .grading/
 .vitest-cache/
 
-# Module 4: refund requests on this computer
-/.data/
